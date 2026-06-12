@@ -95,7 +95,7 @@ function SiteCard({ site }: { site: Site }) {
         </div>
         <div>
           <div className="font-medium text-ocean-500">
-            {(site as any).project_name || site.name || 'Без названия'}
+            {site.project_name ?? (site as { name?: string }).name ?? 'Без названия'}
           </div>
           <div className="mt-0.5 text-sm text-ocean-500/60">
             {url || 'нет URL'} · {created}

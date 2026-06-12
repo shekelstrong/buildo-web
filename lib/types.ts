@@ -16,7 +16,7 @@ export interface Site {
   // Optional fields from list endpoint
   files_count?: number;
   size_kb?: number;
-  preview_summary?: string;
+  preview_summary?: string | null;
 }
 
 export interface User {
