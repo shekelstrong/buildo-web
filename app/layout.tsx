@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-const display = Fraunces({ subsets: ['latin', 'cyrillic'], variable: '--font-display' });
+// Fraunces не поддерживает cyrillic, поэтому fallback на латиницу + Inter (который поддерживает cyrillic)
+const display = Fraunces({ subsets: ['latin'], variable: '--font-display' });
 const body = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-body' });
 const mono = JetBrains_Mono({ subsets: ['latin', 'cyrillic'], variable: '--font-mono' });
 
