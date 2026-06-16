@@ -4,9 +4,9 @@ import { ArrowRight, Sparkles, Zap, Code2 } from 'lucide-react';
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Decorative gradient blob */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-br from-tide-500/20 via-tide-400/10 to-transparent blur-3xl" />
-      <div className="pointer-events-none absolute top-40 right-0 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-amber/10 to-coral/10 blur-3xl" />
+      {/* Decorative gradient blob — scale down on mobile to prevent overflow */}
+      <div className="pointer-events-none absolute -top-20 left-1/2 h-[280px] w-[280px] -translate-x-1/2 rounded-full bg-gradient-to-br from-tide-500/20 via-tide-400/10 to-transparent blur-3xl sm:-top-40 sm:h-[500px] sm:w-[500px]" />
+      <div className="pointer-events-none absolute top-20 -right-12 h-[180px] w-[180px] rounded-full bg-gradient-to-br from-amber/10 to-coral/10 blur-3xl sm:top-40 sm:right-0 sm:h-[300px] sm:w-[300px]" />
 
       <div className="container-wide relative pt-20 pb-32">
         <div className="mx-auto max-w-3xl text-center">

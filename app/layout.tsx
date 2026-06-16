@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image', title: 'Buildo', description: 'ИИ-разработка сайтов' },
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#0a2540',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
