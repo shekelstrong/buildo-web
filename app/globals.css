@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Layero fixed top-bar (~64px) перекрывал sticky Header — компенсируем отступом.
+   pt-[64px] на body, чтобы контент не уезжал под admin-bar. */
+body {
+  padding-top: 64px;
+}
+
+/* Если на странице есть flex min-h-screen — снимаем sticky/fixed внутри,
+   иначе дочерние элементы уезжают поверх Layero footer. */
+main, section, footer {
+  position: relative;
+  z-index: 1;
+}
+
 @layer base {
   html { scroll-behavior: smooth; }
   body { @apply text-base leading-relaxed; }
