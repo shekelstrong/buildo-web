@@ -1,19 +1,25 @@
 'use client';
 
-import Link from 'next/link';
-import { Check } from 'lucide-react';
 import { useState } from 'react';
+import { Check } from 'lucide-react';
 
-type Period = 'month' | 'year';
+type Tier = {
+  name: string;
+  monthlyPrice: number;
+  description: string;
+  cta: string;
+  href: string;
+  highlighted?: boolean;
+  features: string[];
+};
 
-const tiers = [
+const TIERS: Tier[] = [
   {
     name: 'Free',
     monthlyPrice: 0,
     description: '1 сайт, базовые возможности',
     cta: 'Начать бесплатно',
     href: '/dashboard/sites/new',
-    highlighted: false,
     features: [
       '1 активный сайт',
       'Layero хостинг',
@@ -44,7 +50,6 @@ const tiers = [
     description: 'Для студий и агентств',
     cta: 'Связаться с нами',
     href: '/auth/signin?plan=business',
-    highlighted: false,
     features: [
       'Безлимит сайтов',
       'White-label',
@@ -56,21 +61,14 @@ const tiers = [
   },
 ];
 
-// Логика цены для периода:
-// - free — всегда 0
-// - при оплате за год — скидка 20% (×12×0.8), отображаем как "X ₽/мес при оплате за год"
-function priceFor(tier: typeof tiers[number], period: Period): { display: string; suffix: string; sub?: string } {
-  if (tier.monthlyPrice === 0) {
-    return { display: '0 ₽', suffix: 'навсегда' };
-  }
+type Period = 'month' | 'year';
+
+function priceFor(price: number, period: Period): { display: string; suffix: string; sub?: string } {
+  if (price === 0) return { display: '0 ₽', suffix: 'навсегда' };
   if (period === 'month') {
-    return {
-      display: tier.monthlyPrice.toLocaleString('ru-RU') + ' ₽',
-      suffix: 'в месяц',
-    };
+    return { display: price.toLocaleString('ru-RU') + ' ₽', suffix: 'в месяц' };
   }
-  // year: -20%
-  const perMonth = Math.round(tier.monthlyPrice * 0.8);
+  const perMonth = Math.round(price * 0.8);
   const yearTotal = perMonth * 12;
   return {
     display: perMonth.toLocaleString('ru-RU') + ' ₽',
@@ -122,8 +120,8 @@ export function Pricing() {
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {tiers.map((tier) => {
-            const price = priceFor(tier, period);
+          {TIERS.map((tier) => {
+            const price = priceFor(tier.monthlyPrice, period);
             return (
               <div
                 key={tier.name}
@@ -147,19 +145,17 @@ export function Pricing() {
                     <span className="font-display text-5xl font-bold text-ocean-500">{price.display}</span>
                     <span className="text-ocean-500/50">/ {price.suffix}</span>
                   </div>
-                  {price.sub && (
-                    <p className="mt-1 text-xs text-tide-600">{price.sub}</p>
-                  )}
+                  {price.sub && <p className="mt-1 text-xs text-tide-600">{price.sub}</p>}
                 </div>
 
-                <Link
+                <a
                   href={tier.href}
                   className={`mt-6 block w-full text-center ${
                     tier.highlighted ? 'btn-primary' : 'btn-secondary'
                   }`}
                 >
                   {tier.cta}
-                </Link>
+                </a>
 
                 <ul className="mt-8 space-y-3">
                   {tier.features.map((f) => (

@@ -3,9 +3,6 @@ import { Sparkles } from 'lucide-react';
 
 export function Header() {
   return (
-    {/* NOTE: не используем sticky/fixed — Layero уже ставит свой fixed top-bar,
-        двойной sticky конфликтует и ломает отображение на скролле.
-        pt-16 на body компенсирует высоту Layero top-bar (~64px). */}
     <header className="relative z-10 border-b border-ocean-500/5 bg-cream/85 backdrop-blur-md">
       <div className="container-wide flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
@@ -18,6 +15,7 @@ export function Header() {
         <nav className="hidden items-center gap-1 md:flex">
           <Link href="/#features" className="btn-ghost">Возможности</Link>
           <Link href="/#how" className="btn-ghost">Как работает</Link>
+          <Link href="/ai-agent" className="btn-ghost">AI-агент</Link>
           <Link href="/pricing" className="btn-ghost">Тарифы</Link>
           <Link href="/docs" className="btn-ghost">Документация</Link>
         </nav>
