@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 
 type Tier = {
   name: string;
-  monthlyPrice: number;
+  monthlyPrice: number; // базовая цена в месяц при ежемесячной оплате
   description: string;
   cta: string;
   href: string;
@@ -63,25 +63,36 @@ const TIERS: Tier[] = [
 
 type Period = 'month' | 'year';
 
-function priceFor(price: number, period: Period): { display: string; suffix: string; sub?: string } {
-  if (price === 0) return { display: '0 ₽', suffix: 'навсегда' };
-  if (period === 'month') {
-    return { display: price.toLocaleString('ru-RU') + ' ₽', suffix: 'в месяц' };
+// 20% скидка при оплате за год — стандарт SaaS.
+const YEAR_DISCOUNT = 0.2;
+
+function priceFor(price: number, period: 'month' | 'year') {
+  if (price === 0) {
+    return { display: '0', suffix: '₽', period: 'навсегда', full: '' };
   }
-  const perMonth = Math.round(price * 0.8);
-  const yearTotal = perMonth * 12;
+  if (period === 'month') {
+    return {
+      display: price.toLocaleString('ru-RU'),
+      suffix: '₽',
+      period: 'в месяц',
+      full: `${(price * 12).toLocaleString('ru-RU')} ₽ за год`,
+    };
+  }
+  const yearTotal = Math.round(price * 12 * (1 - YEAR_DISCOUNT));
+  const perMonth = Math.round(yearTotal / 12);
   return {
-    display: perMonth.toLocaleString('ru-RU') + ' ₽',
-    suffix: 'в месяц',
-    sub: `при оплате ${yearTotal.toLocaleString('ru-RU')} ₽/год — экономия 20%`,
+    display: perMonth.toLocaleString('ru-RU'),
+    suffix: '₽',
+    period: 'в месяц',
+    full: `${yearTotal.toLocaleString('ru-RU')} ₽ за год (скидка 20%)`,
   };
 }
 
 export function Pricing() {
-  const [period, setPeriod] = useState<Period>('month');
+  const [period, setPeriod] = useState<'month' | 'year'>('month');
 
   return (
-    <section id="pricing" className="relative z-10 border-t border-ocean-500/5 bg-white py-24">
+    <section id="pricing" className="relative border-t border-ocean-500/5 bg-white py-24">
       <div className="container-wide">
         <div className="mx-auto max-w-2xl text-center">
           <div className="badge mb-4">Тарифы</div>
@@ -141,11 +152,14 @@ export function Pricing() {
                 <p className="mt-2 text-sm text-ocean-500/60">{tier.description}</p>
 
                 <div className="mt-6">
-                  <div className="flex items-baseline gap-1">
+                  <div className="flex items-baseline gap-2">
                     <span className="font-display text-5xl font-bold text-ocean-500">{price.display}</span>
-                    <span className="text-ocean-500/50">/ {price.suffix}</span>
+                    <span className="text-2xl font-semibold text-ocean-500">{price.suffix}</span>
+                    <span className="text-ocean-500/50">/ {price.period}</span>
                   </div>
-                  {price.sub && <p className="mt-1 text-xs text-tide-600">{price.sub}</p>}
+                  {price.full && (
+                    <p className="mt-2 text-xs text-tide-600">{price.full}</p>
+                  )}
                 </div>
 
                 <a
@@ -169,6 +183,11 @@ export function Pricing() {
             );
           })}
         </div>
+
+        {/* Пояснение под тарифами */}
+        <p className="mt-12 text-center text-sm text-ocean-500/60">
+          При оплате за год — скидка 20%. Продление по той же цене. Без скрытых платежей.
+        </p>
       </div>
     </section>
   );

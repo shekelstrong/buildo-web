@@ -2,17 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Layero fixed top-bar (~64px) перекрывал sticky Header — компенсируем отступом.
-   pt-[64px] на body, чтобы контент не уезжал под admin-bar. */
+/* ============================================================
+   LAYERO INTEGRATION FIX (2026-06-26)
+   Layero iframe/admin-bar overlays требуют компенсации:
+   - top-bar: ~64px (сверху)
+   - bottom-bar: ~50px (снизу)
+   Без padding-ов контент уходит под панели.
+   ============================================================ */
 body {
-  padding-top: 64px;
+  padding-top: 64px;     /* Layero top-bar */
+  padding-bottom: 50px;  /* Layero bottom-bar */
 }
 
-/* Если на странице есть flex min-h-screen — снимаем sticky/fixed внутри,
-   иначе дочерние элементы уезжают поверх Layero footer. */
-main, section, footer {
+/* Контент ВЫШЕ Layero панелей — иначе панели накрывают.
+   Layero обычно z-index 9999+, поэтому ставим 0 (под ними).
+   Секции остаются relative для собственного stacking context. */
+main, section, footer, header {
   position: relative;
-  z-index: 1;
+  z-index: 0;
+}
+
+/* Sticky-header внутри страницы — выше обычного контента,
+   но всё равно ниже Layero (это OK, header уезжает под Layero-bar). */
+.sticky-header {
+  z-index: 50;
 }
 
 @layer base {
