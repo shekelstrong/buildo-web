@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Zap, Code2 } from 'lucide-react';
+import { ArrowRight, Sparkles, Zap, Code2, Users } from 'lucide-react';
+import { ScarcityBadge } from '@/components/ScarcityBadge';
 
 export function Hero() {
   return (
@@ -13,6 +14,19 @@ export function Hero() {
           <div className="badge mb-6 animate-fade-in">
             <Sparkles className="h-3 w-3" />
             Первый сайт — бесплатно
+          </div>
+
+          {/* Scarcity badge — паттерн getnexora.ru: social proof + urgency в hero */}
+          <div className="mb-6 flex justify-center">
+            <ScarcityBadge
+              current={142}
+              total={200}
+              unit="компания"
+              closingLabel="Скидка 50% на онбординг закрывается"
+              deadline={new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)}
+              theme="dark"
+              icon={<Users className="h-4 w-4" />}
+            />
           </div>
 
           <h1 className="animate-slide-up text-balance font-display text-5xl font-bold leading-[1.05] tracking-tight text-ocean-500 sm:text-6xl lg:text-7xl">
