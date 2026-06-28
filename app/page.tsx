@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Header } from '@/components/landing/Header';
 import { Hero } from '@/components/landing/Hero';
+import { TrustStrip } from '@/components/landing/TrustStrip';
 import { Features } from '@/components/landing/Features';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { Pricing } from '@/components/landing/Pricing';
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <TrustStrip />
         <Features />
         <HowItWorks />
         <Pricing />
